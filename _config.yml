@@ -3,17 +3,17 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
+title: actionou.github.io
 subtitle: ''
 description: ''
 keywords:
-author: John Doe
+author: actionou
 language: en
 timezone: ''
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://example.com/child' and root as '/child/'
-url: http://example.com
+url: https://actionou.github.io
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -103,4 +103,9 @@ theme: landscape
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+  type: git
+  repo: github_actionou:actionou/actionou.github.io.git
+  branch: blog
+  message: Site updated on {{ now('YYYY-MM-DD HH:mm:ss') }}
+  token: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCl9qFScvQcMH9K2wL9IS+gtfAVatw+2ogzBndEjhR5OG9MneigNE7s8GvNoIt+e4yb/Muq1LUbnBTrFzkk32yO6vHdo8NxnJBKLzLgkpJeVxgs+4Ze/lcu2M96LkMXlF7gQLSeMLyVKTto6tFfNCTm1CXzWNEdj+9iFAHp2W/dfwuH93BqN5xZmWQD+2UM4chsz0w1wibZjIMvXswn++iyHGuXnFbD21EJMYKkSGMVbnoWlNZHfAl+N0ja4hBsyVrGwI14jtf1f02zQycyuob6mo9kmOpjwsSLRvtbrBGfqwy26ni1VXEgHSq0iOhwgAa0ofbnK1JH5KRWcKeGvBFOM+lMEoj4jAJA/Iow8VYb20FNFve/Obm37v5WZZHesRWNho9qGi6yHQmLvSSy08hKyfX295+AJFknq/yi60E0NA4X6pcjKN20WBF5SCT+bOrhdxEgQyPKsovXi9ovvkmzDdxXwlXndrI1t8LOB1cQXGnrgBXqJmZbuRARkN6Bc2M= Aouchinx@88.com
+
