@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Hexo</title>
+  
+  
+  <link href="https://actionou.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://actionou.github.io/"/>
+  <updated>2020-11-30T10:35:08.234Z</updated>
+  <id>https://actionou.github.io/</id>
+  
+  <author>
+    <name>John Doe</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Github添加SSH KEY</title>
+    <link href="https://actionou.github.io/2020/11/30/github-add-ssh-key/"/>
+    <id>https://actionou.github.io/2020/11/30/github-add-ssh-key/</id>
+    <published>2020-11-30T10:31:51.000Z</published>
+    <updated>2020-11-30T10:35:08.234Z</updated>
+    
+    <content type="html"><![CDATA[<p>对开发人员来说，SSH密钥在很多场景都要用到，而大多数人在不同平台使用同一个密钥对，比如公司代码仓库、公司服务器、个人服务器、甚至多个GitHub账号等等。<br>个人建议是每个平台使用专门的密钥对，并好好存档管理。</p><h2 id="1、生成一个GitHub专用的密钥对"><a href="#1、生成一个GitHub专用的密钥对" class="headerlink" title="1、生成一个GitHub专用的密钥对"></a>1、生成一个GitHub专用的密钥对</h2><p>比如GitHub用户名为<code>xyz</code></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/.ssh; <span class="built_in">cd</span> ~/.ssh; ssh-keygen -t rsa -f id_github_xyz -C <span class="string">&quot;your email&quot;</span></span><br></pre></td></tr></table></figure><h2 id="2、设置秘钥对文件权限"><a href="#2、设置秘钥对文件权限" class="headerlink" title="2、设置秘钥对文件权限"></a>2、设置秘钥对文件权限</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 400 id_github_xyz id_github_xyz.pub</span><br></pre></td></tr></table></figure><h2 id="3、把SSH-KEY添加到GitHub管理后台"><a href="#3、把SSH-KEY添加到GitHub管理后台" class="headerlink" title="3、把SSH KEY添加到GitHub管理后台"></a>3、把SSH KEY添加到GitHub管理后台</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat id_github_xyz.pub</span><br></pre></td></tr></table></figure><p>访问<a href="https://github.com/settings/keys">https://github.com/settings/keys</a>，将上面公钥的内容添加进去。</p><h2 id="4、配置本地GitHub账号别名"><a href="#4、配置本地GitHub账号别名" class="headerlink" title="4、配置本地GitHub账号别名"></a>4、配置本地GitHub账号别名</h2><p>编辑<code>~/.ssh/config</code>文件，添加以下内容</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host github_xyz</span><br><span class="line">    HostName github.com</span><br><span class="line">    User git</span><br><span class="line">    IdentityFile ~&#x2F;.ssh&#x2F;id_github_xyz</span><br></pre></td></tr></table></figure><h2 id="5、使用ssh-agent管理生成的私钥"><a href="#5、使用ssh-agent管理生成的私钥" class="headerlink" title="5、使用ssh-agent管理生成的私钥"></a>5、使用ssh-agent管理生成的私钥</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-agent bash &amp;&amp; ssh-add id_github_xyz</span><br></pre></td></tr></table></figure><h2 id="6、从远程仓库克隆"><a href="#6、从远程仓库克隆" class="headerlink" title="6、从远程仓库克隆"></a>6、从远程仓库克隆</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> github_xyz:xyz/repository-name.git</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;对开发人员来说，SSH密钥在很多场景都要用到，而大多数人在不同平台使用同一个密钥对，比如公司代码仓库、公司服务器、个人服务器、甚至多个GitHub账号等等。&lt;br&gt;个人建议是每个平台使用专门的密钥对，并好好存档管理。&lt;/p&gt;
+&lt;h2 id=&quot;1、生成一个GitHub专用的密</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://actionou.github.io/1970/01/01/hello-world/"/>
+    <id>https://actionou.github.io/1970/01/01/hello-world/</id>
+    <published>1970-01-01T00:00:00.000Z</published>
+    <updated>2020-11-30T09:17:02.459Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>
