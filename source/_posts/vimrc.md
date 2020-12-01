@@ -1,6 +1,6 @@
 ---
 title: vimrc
-date: 2020-12-01 23:26:01
+date: 2020-07-01 23:26:01
 tags: [vim,vimrc]
 ---
 
