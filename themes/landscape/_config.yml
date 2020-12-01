@@ -29,7 +29,7 @@ sidebar: right
 widgets:
 - category
 - tag
-- tagcloud
+# - tagcloud
 - archive
 - recent_posts
 
