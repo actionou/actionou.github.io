@@ -158,7 +158,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://actionou.github.io/2020/04/02/use-data-analysis-solve-practical-problems/" data-id="cki7loycl0009austab66buin" data-title="如何用数据分析思维解决实际问题？" class="article-share-link">Share</a>
+      <a data-url="https://actionou.github.io/2020/04/02/use-data-analysis-solve-practical-problems/" data-id="cki7nbniy0009e8stcrt15au3" data-title="如何用数据分析思维解决实际问题？" class="article-share-link">Share</a>
       
       
         <a href="/2020/04/02/use-data-analysis-solve-practical-problems/#comments" class="article-comment-link">
@@ -168,6 +168,237 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-python-pandas" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/03/python-pandas/" class="article-date">
+  <time class="dt-published" datetime="2020-03-02T16:32:22.000Z" itemprop="datePublished">2020-03-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/03/python-pandas/">玩转Pandas数据处理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1、基本处理"><a href="#1、基本处理" class="headerlink" title="1、基本处理"></a>1、基本处理</h2><ul>
+<li>map仅能处理单列</li>
+<li>apply能处理单列或多列，如果直接对df.apply(func,axis=1),那么传入函数的是df,df[‘price’].apply(np.log)传入的是price列</li>
+<li>applymap对全部元素操作，df.applymap(lambda x:”%.2f” % x)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 分组后直接apply，传入的是每个组的df</span></span><br><span class="line">arpu =date_buy_3.groupby(<span class="string">&#x27;date&#x27;</span>).apply(<span class="keyword">lambda</span> x:x[x.behavior_type==<span class="number">4</span>].total.<span class="built_in">sum</span>()/<span class="built_in">len</span>(x.user_id.unique()))</span><br><span class="line"></span><br><span class="line">df.info() <span class="comment"># 获取df的摘要，包括Index范围，所有列名，每一列非空值的数量及数据类型</span></span><br><span class="line">df[<span class="string">&#x27;len_str&#x27;</span>] = df[<span class="string">&#x27;grammer&#x27;</span>].<span class="built_in">map</span>(<span class="keyword">lambda</span> x: <span class="built_in">len</span>(x)) <span class="comment"># 求每个字符串的长度</span></span><br><span class="line"></span><br><span class="line">df.describe() <span class="comment"># 观察这一系列数据的范围,只对可以运算的列有效。大小、波动趋势等等，便于判断后续对数据采取哪类模型更合适</span></span><br><span class="line"><span class="comment"># 包含计数，平均值，标准差，最小值，最大值，25%，50%，75%分位的数值</span></span><br><span class="line"></span><br><span class="line">df.set_index(<span class="string">&quot;A&quot;</span>) <span class="comment"># 设置A列为索引</span></span><br><span class="line">df[[<span class="string">&#x27;ID&#x27;</span>,<span class="string">&#x27;age&#x27;</span>]].astype(<span class="built_in">float</span>) <span class="comment"># 强制类型转换</span></span><br><span class="line">df[<span class="string">&#x27;price&#x27;</span>] = pd.to_numeric(df[<span class="string">&#x27;price&#x27;</span>]) <span class="comment"># 将某列转换成数值类型</span></span><br><span class="line">df[<span class="string">&#x27;C&#x27;</span>] = df[<span class="string">&#x27;A&#x27;</span>]+df[<span class="string">&#x27;C&#x27;</span>] <span class="comment"># 合并成新列</span></span><br><span class="line">df[<span class="string">&quot;D&quot;</span>] = df[<span class="string">&quot;C&quot;</span>].<span class="built_in">map</span>(<span class="built_in">str</span>) + df[<span class="string">&#x27;B&#x27;</span>] <span class="comment"># 此时C列是数字</span></span><br><span class="line"></span><br><span class="line">df1.sex.value_counts() <span class="comment"># sex列分值计数</span></span><br><span class="line">df1.age.replace(<span class="string">&#x27;不详&#x27;</span>,<span class="number">0</span>,inplace=<span class="literal">True</span>) <span class="comment"># 值替代</span></span><br><span class="line">df1.age.astype(<span class="built_in">int</span>) <span class="comment"># 类型强制转换</span></span><br><span class="line"></span><br><span class="line">df.people.diff() <span class="comment"># 求前后的差值，默认为1(此时第一行会是NaN)</span></span><br><span class="line">data[<span class="string">&#x27;收盘价(元)&#x27;</span>].pct_change() <span class="comment"># 当前元素和之前元素相差的百分比，默认为1</span></span><br><span class="line">df[<span class="string">&#x27;people&#x27;</span>].rolling(<span class="number">2</span>).mean() <span class="comment"># 2个为一组向下求平均值，有交错</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># map处理某一列Series，apply处理一个DateFrame</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span>(<span class="params">df</span>):</span></span><br><span class="line">    lst = df[<span class="string">&#x27;salary&#x27;</span>].split(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">    smin = <span class="built_in">int</span>(lst[<span class="number">0</span>].strip(<span class="string">&#x27;k&#x27;</span>))</span><br><span class="line">    smax = <span class="built_in">int</span>(lst[<span class="number">1</span>].strip(<span class="string">&#x27;k&#x27;</span>))</span><br><span class="line">    df[<span class="string">&#x27;salary&#x27;</span>] = <span class="built_in">int</span>((smin + smax) / <span class="number">2</span> * <span class="number">1000</span>)</span><br><span class="line">    <span class="keyword">return</span> df</span><br><span class="line">df = df.apply(func,axis=<span class="number">1</span>) <span class="comment"># 求平均工资的具体数值</span></span><br><span class="line">df[<span class="string">&#x27;sex&#x27;</span>]=df[<span class="string">&#x27;sex&#x27;</span>].<span class="built_in">map</span>(&#123;<span class="string">&#x27;男&#x27;</span>:<span class="number">1</span>,<span class="string">&#x27;女&#x27;</span>:<span class="number">0</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># map的函数只能接收一个参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">apply_age</span>(<span class="params">x,bias</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x+bias</span><br><span class="line"><span class="comment">#以元组的方式传入额外的参数</span></span><br><span class="line">data[<span class="string">&quot;age&quot;</span>] = data[<span class="string">&quot;age&quot;</span>].apply(apply_age,args=(-<span class="number">3</span>,))</span><br><span class="line">df[<span class="string">&#x27;工时&#x27;</span>]=df[<span class="string">&#x27;工时&#x27;</span>]*df[<span class="string">&#x27;工时&#x27;</span>]</span><br><span class="line">df[<span class="string">&#x27;工时&#x27;</span>]=df[<span class="string">&#x27;工时&#x27;</span>]-<span class="number">3</span></span><br><span class="line">df[[<span class="string">&#x27;付费额度&#x27;</span>,<span class="string">&#x27;计费点id&#x27;</span>,<span class="string">&#x27;工时&#x27;</span>]].apply(np.log)</span><br><span class="line">np.median(df[<span class="string">&#x27;salary&#x27;</span>]) <span class="comment"># 计算中位数</span></span><br><span class="line">df.name = df.name.<span class="built_in">map</span>(<span class="keyword">lambda</span> x: x + <span class="string">&#x27;1班&#x27;</span>)  <span class="comment"># lambda 表达式映射</span></span><br><span class="line"></span><br><span class="line">df1.sort_values(by=<span class="string">&#x27;comment&#x27;</span>,ascending=<span class="literal">False</span>)[:<span class="number">10</span>] <span class="comment"># 按评论数降序排列</span></span><br><span class="line">df.sort_index(ascending = <span class="literal">True</span>) <span class="comment"># 按索引升序排序</span></span><br><span class="line">df2[<span class="string">&#x27;province&#x27;</span>]=df2[<span class="string">&#x27;home&#x27;</span>].<span class="built_in">str</span>.split(<span class="string">&#x27;·&#x27;</span>).<span class="built_in">str</span>[<span class="number">0</span>] <span class="comment"># 新建一列，只获取省份</span></span><br><span class="line"></span><br><span class="line">data.groupby(<span class="string">&#x27;sex&#x27;</span>)[<span class="string">&#x27;favour&#x27;</span>].<span class="built_in">sum</span>() <span class="comment"># 分男女查看，喜爱数的总数</span></span><br><span class="line">pd.crosstab(index=data[<span class="string">&#x27;sex&#x27;</span>],columns=data[<span class="string">&#x27;martial_status&#x27;</span>]) <span class="comment"># 分男女查看，婚姻状况的状态人数，交叉表，用于计数</span></span><br><span class="line"></span><br><span class="line">data.groupby(<span class="string">&#x27;constellation&#x27;</span>)[<span class="string">&#x27;qiushi&#x27;</span>].<span class="built_in">sum</span>() <span class="comment"># 分星座查看，qiushi的发布量，agg：聚合</span></span><br><span class="line">d1=data.groupby([<span class="string">&#x27;sex&#x27;</span>,<span class="string">&#x27;constellation&#x27;</span>]).agg(&#123;<span class="string">&#x27;age&#x27;</span>:<span class="string">&#x27;mean&#x27;</span>&#125;) <span class="comment"># 分男女查看不同星座下年龄的平均值</span></span><br><span class="line">heros.role_assist.unique() <span class="comment"># 去重后的数值</span></span><br><span class="line">heros.role_assist.nunique() <span class="comment"># 去重后的个数</span></span><br><span class="line"></span><br><span class="line">g1=heros.groupby([<span class="string">&#x27;attack_range&#x27;</span>,<span class="string">&#x27;role_main&#x27;</span>]).agg(&#123;<span class="string">&#x27;hp_max&#x27;</span>:<span class="string">&#x27;mean&#x27;</span>,<span class="string">&#x27;hp_growth&#x27;</span>:<span class="string">&#x27;max&#x27;</span>&#125;) <span class="comment"># 分组后对hp_max求平均值，对hp_growth求最大值</span></span><br><span class="line"></span><br><span class="line">pd.crosstab(index=heros[<span class="string">&#x27;role_main&#x27;</span>],columns=heros[<span class="string">&#x27;attack_range&#x27;</span>]) <span class="comment"># 交叉表，用于计数</span></span><br><span class="line"></span><br><span class="line">pd.pivot_table(data=heros,index=<span class="string">&#x27;role_main&#x27;</span>,values=<span class="string">&#x27;hp_max&#x27;</span>,columns=<span class="string">&#x27;attack_range&#x27;</span>,aggfunc=<span class="string">&#x27;count&#x27;</span>,fill_value=<span class="number">0</span>) <span class="comment"># 透视表，行筛选出&#x27;role_main&#x27;，再根据&#x27;attack_range&#x27;分组统计多少种&#x27;hp_max&#x27;</span></span><br><span class="line"></span><br><span class="line">pd.pivot_table(data=heros,index=<span class="string">&#x27;role_main&#x27;</span>,columns=<span class="string">&#x27;attack_range&#x27;</span>,values=<span class="string">&#x27;hp_max&#x27;</span>,aggfunc=<span class="string">&#x27;mean&#x27;</span>,fill_value=<span class="number">0</span>) <span class="comment"># 结果表行是&#x27;role_main&#x27;,列是&#x27;attack_range&#x27;，然后对&#x27;hp_max&#x27;求平均值</span></span><br><span class="line">heros.groupby([<span class="string">&#x27;role_main&#x27;</span>,<span class="string">&#x27;attack_range&#x27;</span>])[<span class="string">&#x27;hp_max&#x27;</span>].mean()</span><br><span class="line"></span><br><span class="line">df[<span class="string">&#x27;col1&#x27;</span>][~df[<span class="string">&#x27;col1&#x27;</span>].isin(df[<span class="string">&#x27;col2&#x27;</span>])] <span class="comment"># 提取第一列中不在第二列出现的数字</span></span><br><span class="line">df.style.<span class="built_in">format</span>(&#123;<span class="string">&#x27;data&#x27;</span>: <span class="string">&#x27;&#123;0:.2%&#125;&#x27;</span>.<span class="built_in">format</span>&#125;) <span class="comment"># 格式化data列，23%</span></span><br><span class="line">df[<span class="string">&#x27;split&#x27;</span>] = df[<span class="string">&#x27;linestaion&#x27;</span>].<span class="built_in">str</span>.split(<span class="string">&#x27;_&#x27;</span>) <span class="comment"># 得出的是列表</span></span><br><span class="line">df[df[<span class="string">&#x27;industryField&#x27;</span>].<span class="built_in">str</span>.startswith(<span class="string">&#x27;数据&#x27;</span>)] <span class="comment"># 提取以数据开头的行</span></span><br><span class="line">df.agg(&#123;<span class="string">&quot;salary&quot;</span>:np.<span class="built_in">sum</span>,<span class="string">&quot;score&quot;</span>:np.mean&#125;) <span class="comment"># agg是聚合函数</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>快速画图</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">df.people.plot(kind=<span class="string">&#x27;pie&#x27;</span>) <span class="comment"># 饼状图</span></span><br><span class="line">df.people.plot(kind=<span class="string">&#x27;hist&#x27;</span>) <span class="comment"># 直方图</span></span><br><span class="line">df.people.plot(kind=<span class="string">&#x27;bar&#x27;</span>) <span class="comment"># 柱状图</span></span><br><span class="line">df.people.plot() <span class="comment"># 折线图</span></span><br><span class="line"></span><br><span class="line">data[[<span class="string">&#x27;收盘价(元)&#x27;</span>,<span class="string">&#x27;开盘价(元)&#x27;</span>]].plot()</span><br></pre></td></tr></table></figure>
+
+<p><strong>原始数据最基本的操作一定包括如下三步</strong></p>
+<ol>
+<li>空值的处理</li>
+<li>重复值的处理</li>
+<li>异常值的处理</li>
+</ol>
+<h2 id="2、删除重复元素"><a href="#2、删除重复元素" class="headerlink" title="2、删除重复元素"></a>2、删除重复元素</h2><p>使用duplicated()函数检测重复的行，返回元素为布尔类型的Series对象，每个元素对应一行，如果该行不是第一次出现，则元素为True</p>
+<ul>
+<li>使用drop_duplicates()函数删除重复的行</li>
+<li>使用duplicated()函数查看重复的行</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">df = DataFrame(data=&#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>:[<span class="string">&quot;lucy&quot;</span>,<span class="string">&quot;tom&quot;</span>,<span class="string">&quot;jack&quot;</span>,<span class="string">&quot;tony&quot;</span>,<span class="string">&quot;mery&quot;</span>,<span class="string">&quot;rose&quot;</span>,<span class="string">&quot;black&quot;</span>],</span><br><span class="line">    <span class="string">&quot;python&quot;</span>:np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=(<span class="number">7</span>)),</span><br><span class="line">    <span class="string">&quot;java&quot;</span>:np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=<span class="number">7</span>),</span><br><span class="line">    <span class="string">&quot;php&quot;</span>:np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=<span class="number">7</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">df.loc[df.duplicated(keep=<span class="string">&#x27;last&#x27;</span>)] <span class="comment"># 查询重复行，重复值只在行内查找</span></span><br><span class="line">df.drop_duplicates(keep=<span class="string">&#x27;last&#x27;</span>)</span><br><span class="line">df.loc[df.duplicated(subset=[<span class="string">&quot;python&quot;</span>,<span class="string">&quot;java&quot;</span>,<span class="string">&quot;php&quot;</span>])] <span class="comment"># 查询python、java、php成绩相同的行</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3、映射"><a href="#3、映射" class="headerlink" title="3、映射"></a>3、映射</h2><p>replace属于fillna的高级版本</p>
+<p>映射的含义：创建一个映射关系列表，把values元素和一个特定的标签或者字符串绑定</p>
+<p>包含三种操作：</p>
+<ul>
+<li>replace()函数：替换元素（DataFrame\Series的函数)</li>
+<li>最重要：map()函数：新建一列(Series的函数)</li>
+<li>rename()函数：替换索引(DataFrame的函数)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">df.replace(to_replace=<span class="string">&#x27;tom&#x27;</span>, value=<span class="string">&#x27;TOM&#x27;</span>) <span class="comment"># 直接替换字符串</span></span><br><span class="line">df.replace(to_replace=<span class="number">77</span>, value=<span class="number">100</span>) <span class="comment"># 替换数字</span></span><br><span class="line">df.replace(to_replace=[<span class="string">&quot;lucy&quot;</span>,<span class="string">&quot;tom&quot;</span>,<span class="string">&quot;jack&quot;</span>], value=[<span class="string">&quot;LUCY&quot;</span>,<span class="string">&quot;MERY&quot;</span>,<span class="string">&quot;JACK&quot;</span>]) <span class="comment"># 使用列表替换</span></span><br><span class="line">map_dic = &#123;</span><br><span class="line">    <span class="string">&quot;lucy&quot;</span>:<span class="string">&quot;LUCY&quot;</span>,</span><br><span class="line">    <span class="string">&quot;mery&quot;</span>:<span class="string">&quot;MERY&quot;</span>,</span><br><span class="line">    <span class="string">&quot;tom&quot;</span>:<span class="string">&quot;TOM&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">df.replace(to_replace=map_dic) <span class="comment"># 使用字典替换</span></span><br><span class="line">df[<span class="string">&quot;oldname&quot;</span>] = df.name <span class="comment"># 新建一列</span></span><br><span class="line">df.replace(to_replace=&#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;lucy&quot;</span>&#125;, value=<span class="string">&quot;LUCY-1&quot;</span>) <span class="comment"># 使用字典处理某一列</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 正则替换</span></span><br><span class="line"><span class="comment"># to_replace 使用正则表达式</span></span><br><span class="line"><span class="comment"># regex 必须设置为True</span></span><br><span class="line">df.replace(to_replace=<span class="string">r&#x27;t.*&#x27;</span>, regex=<span class="literal">True</span>, value=<span class="string">&quot;ContainT&quot;</span>) <span class="comment"># t开头全部替换</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1、a-replace-函数：替换元素"><a href="#3-1、a-replace-函数：替换元素" class="headerlink" title="3-1、a.replace()函数：替换元素"></a>3-1、a.replace()函数：替换元素</h3><p>使用replace()函数，对values进行替换操作</p>
+<h3 id="3-2、Series替换操作"><a href="#3-2、Series替换操作" class="headerlink" title="3-2、Series替换操作"></a>3-2、Series替换操作</h3><ul>
+<li>单值替换<ul>
+<li>普通替换</li>
+<li>字典替换</li>
+</ul>
+</li>
+<li>多值替换<ul>
+<li>列表替换</li>
+<li>字典替换（推荐）</li>
+</ul>
+</li>
+</ul>
+<p>Series参数说明：</p>
+<ul>
+<li>method：对指定的值使用相邻的值填充,method不能再DataFrame当中使用</li>
+<li>limit：设定填充次数</li>
+</ul>
+<h3 id="3-3、DataFrame替换操作"><a href="#3-3、DataFrame替换操作" class="headerlink" title="3-3、DataFrame替换操作"></a>3-3、DataFrame替换操作</h3><ul>
+<li><p>单值替换</p>
+<ul>
+<li>普通替换</li>
+<li>按列指定单值替换{列标签：替换值}</li>
+</ul>
+</li>
+<li><p>多值替换</p>
+<ul>
+<li>列表替换</li>
+<li>单字典替换（推荐）</li>
+</ul>
+</li>
+</ul>
+<p><strong>注意</strong>：DataFrame中，无法使用method和limit参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df.drop(<span class="string">&quot;oldname&quot;</span>, axis=<span class="number">1</span>, inplace=<span class="literal">True</span>)</span><br><span class="line">df.replace(to_replace=[<span class="number">22</span>,<span class="number">77</span>], value=[<span class="number">100</span>,<span class="number">100</span>])</span><br><span class="line">df.replace(to_replace=&#123;<span class="number">22</span>:<span class="number">110</span>,<span class="number">77</span>:<span class="number">110</span>&#125;) <span class="comment"># 22换成77,77换成110</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4、b-map-函数：新建一列"><a href="#3-4、b-map-函数：新建一列" class="headerlink" title="3-4、b.map()函数：新建一列"></a>3-4、b.map()函数：新建一列</h3><p>map 是Series的函数，所以通常被用来对某一列进行整体的映射处理</p>
+<ul>
+<li>map()可以使用字典映射新一列数据</li>
+<li>map()中可以使用lambda表达式</li>
+<li>map()中可以使用方法，可以是自定义的方法</li>
+</ul>
+<p><strong>注意</strong></p>
+<ul>
+<li>map()中不能使用sum之类的函数，for循环</li>
+<li>map(字典) 字典的键要足以匹配所有的数据，否则出现NaN</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">map_dic = &#123;<span class="string">&#x27;lucy&#x27;</span>:<span class="string">&quot;北京&quot;</span>,<span class="string">&#x27;tom&#x27;</span>:<span class="string">&quot;上海&quot;</span>,<span class="string">&#x27;jack&#x27;</span>:<span class="string">&quot;北京&quot;</span>, <span class="string">&#x27;tony&#x27;</span>:<span class="string">&quot;上海&quot;</span>, <span class="string">&#x27;mery&#x27;</span>:<span class="string">&quot;上海&quot;</span>, <span class="string">&#x27;rose&#x27;</span>:<span class="string">&quot;北京&quot;</span></span><br><span class="line">&#125; <span class="comment"># 使用字典map</span></span><br><span class="line">df[<span class="string">&quot;address&quot;</span>] = df.name.<span class="built_in">map</span>(map_dic)</span><br><span class="line">df[<span class="string">&#x27;len_str&#x27;</span>] = df[<span class="string">&#x27;grammer&#x27;</span>].<span class="built_in">map</span>(<span class="keyword">lambda</span> x: <span class="built_in">len</span>(x))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">map_name</span>(<span class="params">name</span>):</span></span><br><span class="line">    <span class="keyword">return</span> map_dic.get(name,name)</span><br><span class="line">df[<span class="string">&quot;address&quot;</span>] = df[<span class="string">&quot;name&quot;</span>].<span class="built_in">map</span>(map_name) <span class="comment"># 使用函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># map的函数只能接收一个参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">apply_age</span>(<span class="params">x,bias</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x+bias</span><br><span class="line"><span class="comment">#以元组的方式传入额外的参数</span></span><br><span class="line">data[<span class="string">&quot;age&quot;</span>] = data[<span class="string">&quot;age&quot;</span>].apply(apply_age,args=(-<span class="number">3</span>,))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用函数map</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">score_5</span>(<span class="params">score</span>):</span></span><br><span class="line">    <span class="keyword">if</span> score &gt; <span class="number">90</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;A&quot;</span></span><br><span class="line">    <span class="keyword">elif</span> score &gt; <span class="number">80</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;B&quot;</span></span><br><span class="line">    <span class="keyword">elif</span> score &gt; <span class="number">70</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;C&quot;</span></span><br><span class="line">    <span class="keyword">elif</span> score &gt;= <span class="number">60</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;D&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;E&quot;</span></span><br><span class="line">df.java = df.java.<span class="built_in">map</span>(score_5)</span><br><span class="line">df[<span class="string">&quot;php_5&quot;</span>] = df.php.<span class="built_in">map</span>(score_5) <span class="comment"># 函数映射</span></span><br><span class="line">df.name = df.name.<span class="built_in">map</span>(<span class="keyword">lambda</span> x: x + <span class="string">&#x27;1班&#x27;</span>)  <span class="keyword">lambda</span> 表达式映射</span><br><span class="line">df.name.transform(<span class="keyword">lambda</span> x: x + <span class="string">&#x27;学员&#x27;</span>) <span class="comment"># transform()和map()类似</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对一个DataFrame做遍历的时候，默认就是遍历它的列标签</span></span><br><span class="line"><span class="comment"># 完全可以把一个DataFrame当成字典来遍历</span></span><br><span class="line"><span class="keyword">for</span> column, v <span class="keyword">in</span> score.items():</span><br><span class="line">    print(column, v)</span><br><span class="line">    print(<span class="string">&#x27;---&#x27;</span>) <span class="comment"># 结果是每次打印每列的值</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5、c-rename-函数：替换索引，更改列名"><a href="#3-5、c-rename-函数：替换索引，更改列名" class="headerlink" title="3-5、c.rename()函数：替换索引，更改列名"></a>3-5、c.rename()函数：替换索引，更改列名</h3><p>仍然是新建一个字典</p>
+<p>使用rename()函数替换行索引</p>
+<ul>
+<li>mapper 替换所有索引</li>
+<li>index 替换行索引</li>
+<li>columns 替换列索引</li>
+<li>level 指定多维索引的维度</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">score.rename(columns=&#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;姓名&quot;</span>&#125;,inplace=<span class="literal">True</span>) <span class="comment"># 改列名</span></span><br><span class="line">score.rename(index=&#123;<span class="string">&quot;张三&quot;</span>:<span class="string">&quot;tom&quot;</span>, <span class="string">&quot;李四&quot;</span>:<span class="string">&quot;jack&quot;</span>&#125;,inplace=<span class="literal">True</span>) <span class="comment"># 改索引名</span></span><br><span class="line">score.set_index(<span class="string">&quot;name&quot;</span>, inplace=<span class="literal">True</span>) <span class="comment"># 重新设置name为索引</span></span><br><span class="line"></span><br><span class="line">mapper = &#123;</span><br><span class="line">    <span class="string">&quot;张三&quot;</span>:<span class="string">&quot;tom&quot;</span>,</span><br><span class="line">    <span class="string">&quot;李四&quot;</span>:<span class="string">&quot;jack&quot;</span>,</span><br><span class="line">    <span class="string">&quot;语文&quot;</span>:<span class="string">&quot;文学&quot;</span>,</span><br><span class="line">    <span class="string">&quot;英语&quot;</span>:<span class="string">&quot;外语&quot;</span>,</span><br><span class="line">    <span class="string">&quot;上学期&quot;</span>:<span class="string">&quot;FIRSTCLASS&quot;</span>,</span><br><span class="line">    <span class="string">&quot;下学期&quot;</span>:<span class="string">&quot;SECONDCLASS&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">score.rename(mapper=mapper, axis=<span class="number">1</span>) <span class="comment"># 用字典替换，axis=1-&gt;改列名</span></span><br><span class="line"></span><br><span class="line">total = pd.concat((score1, score2), axis=<span class="number">1</span>, keys=[<span class="string">&quot;上学期&quot;</span>,<span class="string">&quot;下学期&quot;</span>])</span><br><span class="line">pd.concat([score1, score2，score3], axis=<span class="number">0</span>,ignore_index=<span class="literal">True</span>) <span class="comment"># 可以同时合并多个</span></span><br><span class="line">total.rename(mapper=mapper, axis=<span class="number">1</span>, level=-<span class="number">2</span>)</span><br><span class="line">score.columns = [<span class="string">&quot;math&quot;</span>,<span class="string">&quot;chinese&quot;</span>,<span class="string">&quot;english&quot;</span>] <span class="comment"># 也可以这样重命名列名</span></span><br></pre></td></tr></table></figure>
+<p>使用df.std()函数可以求得DataFrame对象每一列的标准差.</p>
+<p>尊重业务的需求  5000  10000<br>异常值通用的界定办法：如果数据是呈标准正态分布的， |data| &gt; 3*|data.std()|<br>离群点的检测： 数值型的数据都可以使用离群点的方式来检测异常</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df = DataFrame(data=np.random.randn(<span class="number">1000</span>,<span class="number">3</span>), columns=<span class="built_in">list</span>(<span class="string">&quot;ABC&quot;</span>))</span><br><span class="line"><span class="comment"># 任意一行至少存在一个数的绝对值大于该数所处列的3倍标准差，即认定为满足异常值条件</span></span><br><span class="line">condition = (np.<span class="built_in">abs</span>(df) &gt; <span class="number">3</span>*df.std()).<span class="built_in">any</span>(axis=<span class="number">1</span>)</span><br><span class="line">df.drop(df.loc[condition].index) <span class="comment"># 删除异常列</span></span><br></pre></td></tr></table></figure>
+
+<p>根据每一列或行的标准差，对DataFrame元素进行过滤。</p>
+<p>借助any()或all()函数, 测试是否有True，有一个或以上返回True，反之返回False</p>
+<p>对每一列应用筛选条件,去除标准差太大的数据</p>
+<p>删除特定索引df.drop(labels,inplace = True)</p>
+<h2 id="4、数据分类-组处理"><a href="#4、数据分类-组处理" class="headerlink" title="4、数据分类/组处理"></a>4、数据分类/组处理</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">grouped_obj = heros.groupby(<span class="string">&quot;attack_range&quot;</span>) <span class="comment"># 根据attack_range分组，产生一个分组对象,这是对象</span></span><br><span class="line">grouped_obj.groups <span class="comment"># 查看分组对象的信息</span></span><br><span class="line">grouped_obj.mean()[[<span class="string">&quot;hp_growth&quot;</span>,<span class="string">&quot;hp_max&quot;</span>]] <span class="comment"># 分组之后一定是聚合, 聚合运算只保留可运算的列</span></span><br><span class="line"></span><br><span class="line">grouped_obj[<span class="string">&quot;hp_growth&quot;</span>].mean()</span><br><span class="line">df.groupby(<span class="string">&#x27;name&#x27;</span>).agg(&#123;<span class="string">&#x27;java&#x27;</span>:<span class="string">&#x27;mean&#x27;</span>,<span class="string">&#x27;python&#x27;</span>:<span class="string">&#x27;max&#x27;</span>&#125;) <span class="comment"># 分别对不同的列进行不同的聚合运算</span></span><br><span class="line"></span><br><span class="line">df.groupby(<span class="string">&#x27;name&#x27;</span>).mean()[<span class="string">&#x27;java&#x27;</span>]</span><br><span class="line">df.groupby(<span class="string">&#x27;name&#x27;</span>)[<span class="string">&#x27;java&#x27;</span>].mean() <span class="comment"># 效果同上</span></span><br><span class="line"></span><br><span class="line">h1=heros[[<span class="string">&quot;name&quot;</span>,<span class="string">&quot;hp_max&quot;</span>,<span class="string">&quot;mp_max&quot;</span>,<span class="string">&quot;attack_range&quot;</span>,<span class="string">&quot;role_main&quot;</span>]].copy()</span><br><span class="line">avg = DataFrame(h1.groupby(<span class="string">&quot;attack_range&quot;</span>)[<span class="string">&quot;hp_max&quot;</span>].mean())</span><br><span class="line"></span><br><span class="line">pd.merge(h1, avg, left_on=<span class="string">&quot;attack_range&quot;</span>, right_index=<span class="literal">True</span>, suffixes=[<span class="string">&quot;&quot;</span>, <span class="string">&quot;_avg&quot;</span>])</span><br><span class="line"></span><br><span class="line">grouped_obj1 = h1.groupby([<span class="string">&quot;attack_range&quot;</span>,<span class="string">&quot;role_main&quot;</span>])  <span class="comment"># 多字段分组</span></span><br><span class="line">grouped_obj1.groups</span><br><span class="line"></span><br><span class="line">grouped_obj1.agg(&#123;<span class="string">&quot;hp_max&quot;</span>:<span class="string">&quot;mean&quot;</span>,<span class="string">&quot;mp_max&quot;</span>:<span class="string">&quot;mean&quot;</span>&#125;).unstack(level=-<span class="number">2</span>, fill_value=<span class="number">0</span>) <span class="comment"># 这其实是一个透视表</span></span><br></pre></td></tr></table></figure>
+
+<p>数据聚合是数据处理的最后一步，通常是要使每一个数组生成一个单一的数值。</p>
+<p>数据分类处理：</p>
+<ul>
+<li>分组：先把数据分为几组</li>
+<li>用函数处理：为不同组的数据应用不同的函数以转换数据</li>
+<li>合并：把不同组得到的结果合并起来</li>
+</ul>
+<p>数据分类处理的核心：</p>
+<ul>
+<li><p>groupby()函数</p>
+</li>
+<li><p>groups属性查看分组情况</p>
+</li>
+<li><p>根据item分组,查看结果</p>
+</li>
+</ul>
+<p>总结：数据类型是离散的可以分组，连续的没有意义</p>
+<ul>
+<li><p>获取weight的总和</p>
+</li>
+<li><p>把总和跟df进行merge合并</p>
+</li>
+<li><p>使用列表进行多列分组，得到的结果是多层级索引</p>
+</li>
+</ul>
+<h2 id="5、高级数据聚合apply"><a href="#5、高级数据聚合apply" class="headerlink" title="5、高级数据聚合apply()"></a>5、高级数据聚合apply()</h2><h3 id="5-1、apply直接在groupby后面，传入的是整个df，直接在df后传入的是一列或者一行"><a href="#5-1、apply直接在groupby后面，传入的是整个df，直接在df后传入的是一列或者一行" class="headerlink" title="5-1、apply直接在groupby后面，传入的是整个df，直接在df后传入的是一列或者一行"></a>5-1、apply直接在groupby后面，传入的是整个df，直接在df后传入的是一列或者一行</h3><p> 使用groupby分组后，也可以使用transform和apply提供自定义函数实现更多的运算</p>
+<ul>
+<li>df.groupby(‘item’)[‘price’].sum() &lt;==&gt; df.groupby(‘item’)[‘price’].apply(sum)</li>
+<li>transform和apply都会进行运算，在transform或者apply中传入函数即可</li>
+<li>transform和apply也可以传入一个lambda表达式</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;new&#x27;</span>]=df.apply(<span class="keyword">lambda</span> x:x.php-x.java,axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">h1.groupby(<span class="string">&quot;role_main&quot;</span>)[<span class="string">&quot;mp_max&quot;</span>].mean()</span><br><span class="line">h1.groupby(<span class="string">&quot;role_main&quot;</span>)[<span class="string">&quot;mp_max&quot;</span>,<span class="string">&quot;mp,min&quot;</span>].apply(np.mean) </span><br><span class="line"><span class="comment"># 如果不是官方聚合函数，可以使用apply传递,按列计算时是每一列当成一个Series传入</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 分组对象的聚合函数，接受的是每一个分组,定制一个最大值和平均值的差的聚合函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">group_function</span>(<span class="params">x</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x.<span class="built_in">max</span>() - x.mean()</span><br><span class="line">df = DataFrame(h1.groupby(<span class="string">&quot;role_main&quot;</span>)[<span class="string">&quot;mp_max&quot;</span>].apply(group_function))</span><br><span class="line">df.columns = [<span class="string">&quot;max-mean&quot;</span>]</span><br><span class="line"></span><br><span class="line">df[<span class="string">&#x27;yu_shu&#x27;</span>]=df.apply(<span class="keyword">lambda</span> x:x[<span class="string">&#x27;yu&#x27;</span>]-x[<span class="string">&#x27;shu&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong></p>
+<ul>
+<li>transform 会自动匹配列索引返回值，不去重</li>
+<li>apply 会根据分组情况返回值，去重</li>
+</ul>
+<h3 id="5-2、交叉表"><a href="#5-2、交叉表" class="headerlink" title="5-2、交叉表"></a>5-2、交叉表</h3><p>交叉表(cross-tabulation, 简称crosstab)是一种用于计算分组频率的特殊透视表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.crosstab(index=h1[<span class="string">&quot;role_main&quot;</span>], columns=h1[<span class="string">&quot;attack_range&quot;</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3、透视表"><a href="#5-3、透视表" class="headerlink" title="5-3、透视表"></a>5-3、透视表</h3><p>透视表(pivot table)是各种电子表格程序和其他数据分析软件中一种常见的数据汇总工具。它根据一个或多个键对数据进行聚合，并根据行和列上得分组建将数据分配到各个矩形区域中。在Python和pandas中，可以通过本章所介绍的groupby功能以及（能够利用层次化索引的）DataFrame有一个pivot_table方法，此外还有一个顶级的pandas.pivot_table函数。除了能为groupby提供便利之外，pivot_table还可以添加分项小计（也叫margins）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 透视表</span></span><br><span class="line">pd.pivot_table(data=h1, values=<span class="string">&quot;hp_max&quot;</span>, index=<span class="string">&quot;role_main&quot;</span>, columns=<span class="string">&quot;attack_range&quot;</span>,aggfunc=<span class="string">&quot;mean&quot;</span>, fill_value=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">pd.pivot_table(columns=<span class="string">&#x27;behavior_type&#x27;</span>,index=<span class="string">&#x27;hour&#x27;</span>,data=df,values=<span class="string">&#x27;user_id&#x27;</span>,aggfunc=np.size) <span class="comment">#透视图</span></span><br><span class="line">df.groupby([<span class="string">&#x27;hour&#x27;</span>,<span class="string">&#x27;behavior_type&#x27;</span>])[<span class="string">&#x27;user_id&#x27;</span>].count().unstack(<span class="number">1</span>).head() <span class="comment"># 效果同上</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6、分箱操作：cut和qcut函数"><a href="#6、分箱操作：cut和qcut函数" class="headerlink" title="6、分箱操作：cut和qcut函数"></a>6、分箱操作：cut和qcut函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rfm[<span class="string">&#x27;M-SCORE&#x27;</span>]=pd.cut(rfm[<span class="string">&#x27;M&#x27;</span>],bins=[<span class="number">0</span>,<span class="number">50</span>,<span class="number">100</span>,<span class="number">150</span>,<span class="number">200</span>,<span class="number">250</span>,<span class="number">10000</span>],labels=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>],right=<span class="literal">False</span>).astype(<span class="built_in">float</span>)</span><br><span class="line"></span><br><span class="line">df[<span class="string">&#x27;categories&#x27;</span>] = pd.cut(df[<span class="string">&#x27;salary&#x27;</span>],bins = [<span class="number">0</span>,<span class="number">5000</span>,<span class="number">20000</span>,<span class="number">50000</span>],labels=[<span class="string">&#x27;低&#x27;</span>,<span class="string">&#x27;中&#x27;</span>, <span class="string">&#x27;高&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<p><code>x</code>：被切分的类数组（array-like）数据，必须是1维的（不能用DataFrame）；</p>
+<p><code>bins</code>：bins是被切割后的区间（或者叫“桶”、“箱”、“面元”），有3中形式：一个int型的标量、标量序列（数组）或者pandas.IntervalIndex 。一个int型的标量. 当bins为一个int型的标量时，代表将x平分成bins份。x的范围在每侧扩展0.1%，以包括x的最大值和最小值。标量序列. 标量序列定义了被分割后每一个bin的区间边缘，此时x没有扩 .pandas.IntervalIndex<br>定义要使用的精确区间。</p>
+<p><code>right</code>：bool型参数，默认为True，表示是否包含区间右部。比如如果bins=[1,2,3]，right=True，则区间为(1,2]，(2,3]；right=False，则区间为(1,2),(2,3)。</p>
+<p><code>labels</code>：给分割后的bins打标签，比如把年龄x分割成年龄段bins后，可以给年龄段打上诸如青年、中年的标签。labels的长度必须和划分后的区间长度相等，比如bins=[1,2,3]，划分后有2个区间(1,2]，(2,3]，则labels的长度必须为2。如果指定labels=False，则返回x中的数据在第几个bin中（从0开始）。</p>
+<p><code>retbins</code>：bool型的参数，表示是否将分割后的bins返回，当bins为一个int型的标量时比较有用，这样可以得到划分后的区间，默认为False。</p>
+<p><code>precision</code>：保留区间小数点的位数，默认为3.</p>
+<p><code>include_lowest</code>：bool型的参数，表示区间的左边是开还是闭的，默认为false，也就是不包含区间左部（闭）<code>duplicates</code>：是否允许重复区间。有两种选择：<code>raise</code>：不允许，<code>drop</code>：允许。</p>
+<h3 id="6-1、pd-qcut-参数介绍"><a href="#6-1、pd-qcut-参数介绍" class="headerlink" title="6-1、pd.qcut()参数介绍"></a>6-1、pd.qcut()参数介绍</h3><p>基于分位数的离散化功能。 将变量离散化为基于等级或样本分位数的相等大小的存储桶。</p>
+<p>和pd.cut()相比，pd.qcut()的参数少了两个，少了right和include_lowest两个参数，剩下的参数几乎和pd.cut()一模一样了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.qcut(x, q, labels=<span class="literal">None</span>, retbins=<span class="literal">False</span>, precision=<span class="number">3</span>, duplicates=<span class="string">&#x27;raise&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>x ：一维数组或者Serise</p>
+<p>q ： 表示分位数的整数或者数组，</p>
+<ul>
+<li>如果是分位数的整数，例如10用于十分位，4用于四分位</li>
+<li>如果是分位数数组，例如[0,0.25,0.5,0.75,1]用于四分位数</li>
+</ul>
+<p>labels ： 数组或者布尔值，默认为none，用于指定每个箱体的标签</p>
+<ul>
+<li>如果是数组，长度要与分箱个数一致，比如用四分位数分箱，需要指定四个标签</li>
+<li>如果为False，则仅返回分箱的整数指示符，即当前数据位于哪个箱子中</li>
+</ul>
+<p>rebines ：布尔值，可选。 是否显示分箱的分界值。（由于是按照分位数进行分箱，在不知道分位数具体数值的情况下，可以通过这个参数设置显示分界值即分位数的具体数值）</p>
+<p>precision：整数，默认3，存储和显示分箱标签的精度。</p>
+<p>duplicates：如果分箱临界值不唯一，则引发ValueError或丢弃非唯一</p>
+<h2 id="7、哑变量-独热编码-处理"><a href="#7、哑变量-独热编码-处理" class="headerlink" title="7、哑变量(独热编码)处理"></a>7、哑变量(独热编码)处理</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">data = pd.DataFrame(&#123;<span class="string">&quot;x&quot;</span>:[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>],<span class="string">&quot;季节&quot;</span>:[<span class="string">&quot;春&quot;</span>,<span class="string">&quot;夏&quot;</span>,<span class="string">&quot;秋&quot;</span>,<span class="string">&quot;冬&quot;</span>,<span class="string">&quot;秋&quot;</span>]&#125;)</span><br><span class="line">data =pd.get_dummies(data,columns=[<span class="string">&quot;季节&quot;</span>],prefix_sep=<span class="string">&#x27;_&#x27;</span>,dummy_na=<span class="literal">False</span>,drop_first=<span class="literal">False</span>)</span><br><span class="line">data</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>data</strong> : array-like, Series, or DataFrame 输入的数据</li>
+<li><strong>prefix</strong> : string, get_dummies转换后，列名的前缀，默认为None</li>
+<li><strong>columns</strong> : 指定需要实现类别转换的列名，否则转换所有<strong>类别</strong>性的列(数字列不会转换)</li>
+<li><strong>dummy_na</strong> : bool, default False 增加一列表示空缺值，如果False就忽略空缺值</li>
+<li><strong>drop_first</strong> : bool, default False 获得k中的k-1个类别值，去除第一个,防止出现多重共线性</li>
+</ul>
+<p><strong>注意：</strong></p>
+<p>若针对训练数据已经做好了独热编码并建立了模型，而<strong>新增的预测数据或分类数据的类别变量未包含完整的类别</strong>。此时直接使用pd.get_dummies，会发现与训练集得到的结果不一样。例如：训练数据中季节列中春、夏、秋、冬都出现过，而在新的测试数据中只出现了春与夏，两者的结果会不一样。</p>
+<p>为了避免出现这个情况，需要新增以下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">&#x27;季节&#x27;</span>] = data[<span class="string">&#x27;季节&#x27;</span>].astype(</span><br><span class="line">    <span class="string">&#x27;category&#x27;</span>,</span><br><span class="line">    categories=[<span class="string">&quot;春&quot;</span>, <span class="string">&quot;夏&quot;</span>, <span class="string">&quot;秋&quot;</span>, <span class="string">&quot;冬&quot;</span>]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-时间序列"><a href="#8-时间序列" class="headerlink" title="8-时间序列"></a>8-时间序列</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime, date, time ,timedelta <span class="comment"># datetime模块里的datetime类,date类，time类</span></span><br><span class="line">x=datetime(<span class="number">2020</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">17</span>, <span class="number">6</span>, <span class="number">45</span>)  <span class="comment"># datetime.datetime(2020, 7, 3, 17, 6, 45)，生成一个日期时间对象，也可以只传入日期，时间默认为00:00:00</span></span><br><span class="line">date(<span class="number">2020</span>, <span class="number">11</span>, <span class="number">15</span>)  <span class="comment"># datetime.date(2020, 11, 15)，创建一个日期</span></span><br><span class="line">time(<span class="number">18</span>, <span class="number">23</span>, <span class="number">45</span>) <span class="comment"># datetime.time(10, 53, 21)，创建一个时间</span></span><br><span class="line"></span><br><span class="line">x.date()  <span class="comment"># 2020-07-03 # 提取日期对象</span></span><br><span class="line">x.time()  <span class="comment"># 17:06:45 # 提取时间对象</span></span><br><span class="line">x.year  <span class="comment"># 2020 # 整数int</span></span><br><span class="line">x.month  <span class="comment"># 7</span></span><br><span class="line">x.day  <span class="comment"># 3</span></span><br><span class="line">x.hour  <span class="comment"># 17</span></span><br><span class="line">x.minute <span class="comment"># 6</span></span><br><span class="line">x.second <span class="comment"># 45</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># datetime转字符串，</span></span><br><span class="line">x.strftime(<span class="string">&#x27;%m/%d/%Y %H:%M:%S&#x27;</span>) <span class="comment"># &#x27;07/03/2020 17:06:45&#x27;，指定格式</span></span><br><span class="line"><span class="built_in">str</span>(x) <span class="comment"># &#x27;2020-07-03 17:06:45&#x27;，默认格式</span></span><br><span class="line"><span class="comment"># 字符串转datetime</span></span><br><span class="line">datetime.strptime(<span class="string">&#x27;7/6/2011 18:00:00&#x27;</span>, <span class="string">&#x27;%m/%d/%Y %H:%M:%S&#x27;</span>) <span class="comment">#datetime.datetime(2011, 7, 6, 18, 0)</span></span><br><span class="line"><span class="keyword">from</span> dateutil.parser <span class="keyword">import</span> parse <span class="comment"># dateutil几乎可以解析所有日期表示形式</span></span><br><span class="line">parse(<span class="string">&quot;Jan 31, 2020 10:45:02 PM&quot;</span>) <span class="comment"># datetime.datetime(2020, 1, 31, 22, 45, 2)</span></span><br><span class="line"></span><br><span class="line">x.replace(minute=<span class="number">0</span>,second=<span class="number">0</span>) <span class="comment"># datetime.datetime(2020, 7, 3, 17, 0)替换</span></span><br><span class="line">datetime.now() <span class="comment"># datetime.datetime(2020, 11, 15, 21, 31, 22, 838494) # 获取当前的日期时间</span></span><br><span class="line">datetime.now() + timedelta(<span class="number">3</span>)  <span class="comment"># 计算三天以后的日期时间</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 时间差可以通过两个datetime对象相减得到，可以创建得到</span></span><br><span class="line">dt=datetime(<span class="number">2011</span>, <span class="number">1</span>, <span class="number">7</span>) - datetime(<span class="number">2008</span>, <span class="number">6</span>, <span class="number">24</span>, <span class="number">8</span>, <span class="number">15</span>) <span class="comment"># datetime.timedelta(days=926, seconds=56700),dt是timedelta对象</span></span><br><span class="line">c = timedelta(days=<span class="number">9</span>,weeks=<span class="number">2</span>,hours=<span class="number">8</span>,seconds=<span class="number">23</span>,minutes=<span class="number">12</span>) <span class="comment"># datetime.timedelta(days=23, seconds=29543)，创建一个时间差</span></span><br><span class="line">c.days <span class="comment"># 取时间差的天数,有正负</span></span><br><span class="line">c.seconds <span class="comment"># 取时间差的秒数，为正</span></span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">在计算机中，时间实际上是用数字表示的。我们把1970年1月1日 00:00:00 UTC+00:00时区的时刻称为epoch time，记为0（1970年以前的时间timestamp为负数），当前时间就是相对于epoch time的秒数，称为timestamp。</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">x.timestamp()  <span class="comment"># 1593767205.0 # 获取对应的时间戳，可用时间戳求相隔小时</span></span><br><span class="line">datetime.fromtimestamp(t) <span class="comment"># 从时间戳获取时间</span></span><br><span class="line"></span><br><span class="line">x.weekday() <span class="comment"># 获取a所在的日期是周几，周一是0，以此类推</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">pd.to_datetime(....)</span><br><span class="line">pd.date_range(<span class="string">&#x27;1/1/2000&#x27;</span>, periods=<span class="number">3</span>) <span class="comment"># 生成连续的3天</span></span><br><span class="line">pd.date_range(<span class="string">&#x27;2012-04-01&#x27;</span>, <span class="string">&#x27;2012-06-01&#x27;</span>)</span><br><span class="line">dfdf[<span class="string">&#x27;付款日期&#x27;</span>].dt <span class="comment"># 转换成datetime</span></span><br><span class="line">(datetime(<span class="number">2019</span>,<span class="number">8</span>,<span class="number">19</span>,<span class="number">18</span>,<span class="number">12</span>,<span class="number">45</span>)-dfdf[<span class="string">&#x27;付款日期&#x27;</span>]).dt <span class="comment"># 类似timedelta类型</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://actionou.github.io/2020/03/03/python-pandas/" data-id="cki7nbnj4000je8st7scb6t4q" data-title="玩转Pandas数据处理" class="article-share-link">Share</a>
+      
+      
+        <a href="/2020/03/03/python-pandas/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2020/03/03/python-pandas/" itemprop="commentCount"></span>
+          Comments
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pandas/" rel="tag">pandas</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
 
     </footer>
   </div>
@@ -366,7 +597,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://actionou.github.io/2020/01/10/great-python-code-structure/" data-id="cki7loycl0008aust7hkb31vo" data-title="写出优雅的Python代码之—仓库结构（译）" class="article-share-link">Share</a>
+      <a data-url="https://actionou.github.io/2020/01/10/great-python-code-structure/" data-id="cki7nbniw0005e8stcmfdapwq" data-title="写出优雅的Python代码之—仓库结构（译）" class="article-share-link">Share</a>
       
       
         <a href="/2020/01/10/great-python-code-structure/#comments" class="article-comment-link">
@@ -461,7 +692,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://actionou.github.io/2019/12/02/python-singleton/" data-id="cki7loycj0005austgpma4di1" data-title="Python中的单例模式" class="article-share-link">Share</a>
+      <a data-url="https://actionou.github.io/2019/12/02/python-singleton/" data-id="cki7nbniw0006e8st49zt47et" data-title="Python中的单例模式" class="article-share-link">Share</a>
       
       
         <a href="/2019/12/02/python-singleton/#comments" class="article-comment-link">
@@ -508,7 +739,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://actionou.github.io/2019/07/01/vimrc/" data-id="cki7loycm000aaustaqbsdixe" data-title="vimrc" class="article-share-link">Share</a>
+      <a data-url="https://actionou.github.io/2019/07/01/vimrc/" data-id="cki7nbniz000ae8st0u9k6wnp" data-title="vimrc" class="article-share-link">Share</a>
       
       
         <a href="/2019/07/01/vimrc/#comments" class="article-comment-link">
@@ -567,7 +798,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://actionou.github.io/2019/01/30/github-add-ssh-key/" data-id="cki7loycc0000austad3xgbjx" data-title="Github添加SSH KEY" class="article-share-link">Share</a>
+      <a data-url="https://actionou.github.io/2019/01/30/github-add-ssh-key/" data-id="cki7nbnie0000e8st6k231woi" data-title="Github添加SSH KEY" class="article-share-link">Share</a>
       
       
         <a href="/2019/01/30/github-add-ssh-key/#comments" class="article-comment-link">
@@ -625,7 +856,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://actionou.github.io/1970/01/01/hello-world/" data-id="cki7loyck0006aust9jld52mg" data-title="Hello World" class="article-share-link">Share</a>
+      <a data-url="https://actionou.github.io/1970/01/01/hello-world/" data-id="cki7nbnix0008e8st8mlf0t6a" data-title="Hello World" class="article-share-link">Share</a>
       
       
         <a href="/1970/01/01/hello-world/#comments" class="article-comment-link">
@@ -657,7 +888,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssh/" rel="tag">ssh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/" rel="tag">vim</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pandas/" rel="tag">pandas</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssh/" rel="tag">ssh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/" rel="tag">vim</a></li></ul>
     </div>
   </div>
 
@@ -667,7 +898,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/1970/01/">January 1970</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/1970/01/">January 1970</a></li></ul>
     </div>
   </div>
 
@@ -684,6 +915,10 @@
           </li>
         
           <li>
+            <a href="/2020/03/03/python-pandas/">玩转Pandas数据处理</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/10/great-python-code-structure/">写出优雅的Python代码之—仓库结构（译）</a>
           </li>
         
@@ -693,10 +928,6 @@
         
           <li>
             <a href="/2019/07/01/vimrc/">vimrc</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/30/github-add-ssh-key/">Github添加SSH KEY</a>
           </li>
         
       </ul>
