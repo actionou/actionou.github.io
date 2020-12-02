@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>写出优雅的Python代码之—仓库结构（译） | actionou.github.io</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="我们对于“结构化”的定义是您关注于怎样使您的项目最好地满足它的对象性，我们需要去考虑如何更好地利用Python的特性来创造简洁、高效的代码。在实践层面， “结构化”意味着通过编写简洁的代码，并且正如文件系统中文件和目录的组织一样，代码应该使逻辑和依赖清晰。 哪个函数应该深入到哪个模块？数据在项目中如何流转？什么功能和函数应该组合或独立？要解决这些问题，您可以开始做一个计划，大体来说，即是您的最终产">
+<meta property="og:type" content="article">
+<meta property="og:title" content="写出优雅的Python代码之—仓库结构（译）">
+<meta property="og:url" content="https://actionou.github.io/2020/01/10/great-python-code-structure/index.html">
+<meta property="og:site_name" content="actionou.github.io">
+<meta property="og:description" content="我们对于“结构化”的定义是您关注于怎样使您的项目最好地满足它的对象性，我们需要去考虑如何更好地利用Python的特性来创造简洁、高效的代码。在实践层面， “结构化”意味着通过编写简洁的代码，并且正如文件系统中文件和目录的组织一样，代码应该使逻辑和依赖清晰。 哪个函数应该深入到哪个模块？数据在项目中如何流转？什么功能和函数应该组合或独立？要解决这些问题，您可以开始做一个计划，大体来说，即是您的最终产">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-10T11:55:22.000Z">
+<meta property="article:modified_time" content="2020-12-02T15:11:35.487Z">
+<meta property="article:author" content="actionou">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="actionou.github.io" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">actionou.github.io</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://actionou.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-great-python-code-structure" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/01/10/great-python-code-structure/" class="article-date">
+  <time class="dt-published" datetime="2020-01-10T11:55:22.000Z" itemprop="datePublished">2020-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      写出优雅的Python代码之—仓库结构（译）
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我们对于“结构化”的定义是您关注于怎样使您的项目最好地满足它的对象性，我们需要去考虑如何更好地利用Python的特性来创造简洁、高效的代码。在实践层面， “结构化”意味着通过编写简洁的代码，并且正如文件系统中文件和目录的组织一样，代码应该使逻辑和依赖清晰。</p>
+<p>哪个函数应该深入到哪个模块？数据在项目中如何流转？什么功能和函数应该组合或独立？要解决这些问题，您可以开始做一个计划，大体来说，即是您的最终产品看起来会是怎样的。</p>
+<p>在这一章节中，我们更深入地去观察Python的模块和导入系统，因为它们是加强您的项目结构化的关键因素，接着我们会从不同层面去讨论如何去构建可扩展且测试可靠的的代码。</p>
+<h2 id="仓库结构很重要"><a href="#仓库结构很重要" class="headerlink" title="仓库结构很重要"></a>仓库结构很重要</h2><p>在一个健康的开发周期中，代码风格、API设计和自动化是非常关键的。同样的，对于项目架构，仓库的结构也是关键的一部分。</p>
+<p>当一个潜在的用户和代码贡献者访问您的代码仓库时，他们会看到这些:</p>
+<ul>
+<li>工程的名字</li>
+<li>工程的描述</li>
+<li>一系列的文件</li>
+</ul>
+<p>只有当他们滚动到目录下方时才会看到您工程的README。</p>
+<p>如果您的仓库的目录一团糟，没有清晰的结构，他们可能要到处寻找才能发现您写的<strong>漂亮</strong>的文档。</p>
+<blockquote>
+<p>为您渴望的事业而奋斗，而不仅仅只是为您现在的工作而工作。</p>
+</blockquote>
+<p>当然，第一印象并不决定一切。但是，您和您的同事会和这个仓库并肩战斗很长时间，会接触它的每一个角落和细节。拥有良好的布局，事半功倍。</p>
+<h2 id="仓库样例"><a href="#仓库样例" class="headerlink" title="仓库样例"></a>仓库样例</h2><p>请看这里: 这是 <a target="_blank" rel="noopener" href="http://kennethreitz.org/">Kenneth Reitz</a> 推荐的。<br>这个项目可以在GitHub上找到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">README.rst</span><br><span class="line">LICENSE</span><br><span class="line">setup.py</span><br><span class="line">requirements.txt</span><br><span class="line">sample&#x2F;__init__.py</span><br><span class="line">sample&#x2F;core.py</span><br><span class="line">sample&#x2F;helpers.py</span><br><span class="line">docs&#x2F;conf.py</span><br><span class="line">docs&#x2F;index.rst</span><br><span class="line">tests&#x2F;test_basic.py</span><br><span class="line">tests&#x2F;test_advanced.py</span><br></pre></td></tr></table></figure>
+
+<p>让我们再继续看一些细节。</p>
+<h2 id="真正的模块"><a href="#真正的模块" class="headerlink" title="真正的模块"></a>真正的模块</h2><table>
+<thead>
+<tr>
+<th align="left">布局</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>./sample/</code> or <code>./sample.py</code></td>
+<td align="center">核心代码</td>
+</tr>
+</tbody></table>
+<p>您的模块包是这个仓库的核心，它不应该隐藏起来:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;sample&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>如果您的模块只有一个文件，那么您可以直接将这个文件放在仓库的根目录下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;sample.py</span><br></pre></td></tr></table></figure>
+
+<p>这个模块文件不应该属于任何一个模棱两可的src或者python子目录。</p>
+<h2 id="License"><a href="#License" class="headerlink" title="License"></a>License</h2><table>
+<thead>
+<tr>
+<th align="left">布局</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">./LICENSE</td>
+<td align="center">许可证</td>
+</tr>
+</tbody></table>
+<p>除了源代码本身以外，这个毫无疑问是您仓库最重要的一部分。在这个文件中要有完整的许可说明和授权。<br>如果您不太清楚您应该使用哪种许可方式，请查看 <a target="_blank" rel="noopener" href="http://choosealicense.com/">choosealicense.com</a>.<br>当然，您也可以在发布您的代码时不做任何许可说明，但是这显然阻碍潜在的用户使用您的代码。</p>
+<h2 id="Setup-py"><a href="#Setup-py" class="headerlink" title="Setup.py"></a>Setup.py</h2><table>
+<thead>
+<tr>
+<th align="left">布局</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>./setup.py</code></td>
+<td align="center">打包和发布管理</td>
+</tr>
+</tbody></table>
+<p>如果您的模块包在您的根目录下，显然这个文件也应该在根目录下。</p>
+<h2 id="Requirements-File"><a href="#Requirements-File" class="headerlink" title="Requirements File"></a>Requirements File</h2><table>
+<thead>
+<tr>
+<th align="left">布局</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>./requirements.txt</code></td>
+<td align="center">开发依赖</td>
+</tr>
+</tbody></table>
+<p>一个 <a target="_blank" rel="noopener" href="https://pip.pypa.io/en/stable/user_guide/#requirements-files">pip requirements file</a> 应该放在仓库的根目录。它应该指明完整工程的所有依赖包: 测试, 编译和文档生成。</p>
+<p>如果您的工程没有任何开发依赖，或者您喜欢通过<code>setup.py</code>来设置，那么这个文件不是必须的。</p>
+<h2 id="Documentation"><a href="#Documentation" class="headerlink" title="Documentation"></a>Documentation</h2><table>
+<thead>
+<tr>
+<th align="left">布局</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>./docs/</code></td>
+<td align="center">包的参考文档</td>
+</tr>
+</tbody></table>
+<p>没有任何理由把这个放到别的地方。</p>
+<h2 id="Test-Suite"><a href="#Test-Suite" class="headerlink" title="Test Suite"></a>Test Suite</h2><p>想了解关于编写测试的建议，请查阅 <a target="_blank" rel="noopener" href="https://docs.python-guide.org/writing/tests/">Testing Your Code</a>.</p>
+<table>
+<thead>
+<tr>
+<th align="left">布局</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>./test_sample.py</code> or <code>./tests</code></td>
+<td align="center">包的集合和单元测试</td>
+</tr>
+</tbody></table>
+<p>最开始，一组测试例子只是放在一个文件当中:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;test_sample.py</span><br></pre></td></tr></table></figure>
+
+<p>当测试例子逐步增加时，您会把它放到一个目录里面，像下面这样:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tests&#x2F;test_basic.py</span><br><span class="line">tests&#x2F;test_advanced.py</span><br></pre></td></tr></table></figure>
+
+<p>当然，这些测试例子需要导入您的包来进行测试，有几种方式来处理:</p>
+<ul>
+<li>将您的包安装到site-packages中。</li>
+<li>通过简单直接的路径设置来解决导入的问题。</li>
+</ul>
+<p>我极力推荐后者。如果使用<code>setup.py develop</code>来测试一个持续更新的代码库，需要为每一个版本的代码库设置一个独立的测试环境.太麻烦了。</p>
+<p>可以先创建一个包含上下文环境的文件<code>tests/context.py</code>。 file:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.path.insert(<span class="number">0</span>, os.path.abspath(os.path.join(os.path.dirname(__file__), <span class="string">&#x27;..&#x27;</span>)))</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sample</span><br></pre></td></tr></table></figure>
+
+<p>然后，在每一个测试文件中，导入:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> .context <span class="keyword">import</span> sample</span><br></pre></td></tr></table></figure>
+
+<p>这样就能够像期待的那样工作，而不用采用安装的方式。</p>
+<p>一些人会说应该把您的测试例子放到您的模块里面。我不同意。这样会增加您用户使用的复杂度；而且添加测试模块将导致需要额外的依赖和运行环境。</p>
+<h2 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h2><table>
+<thead>
+<tr>
+<th align="left">布局</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>./Makefile</code></td>
+<td align="center">常规的管理任务</td>
+</tr>
+</tbody></table>
+<p>如果您看看我的项目或者其他开源项目，您都会发现有一个Makefile。为什么？这些项目也不是用C写的啊。。。简而言之，make对于定义常规的管理任务是非常有用的工具。</p>
+<p><strong>样例 Makefile:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">init:</span><br><span class="line">    pip install -r requirements.txt</span><br><span class="line"></span><br><span class="line">test:</span><br><span class="line">    py.test tests</span><br><span class="line"></span><br><span class="line">.PHONY: init test</span><br></pre></td></tr></table></figure>
+
+<p>一些其他的常规管理脚本（比如<code>manage.py</code>或者<code>fabfile.py</code>），也放在仓库的根目录下。</p>
+<h2 id="关于-Django-Applications"><a href="#关于-Django-Applications" class="headerlink" title="关于 Django Applications"></a>关于 Django Applications</h2><p>从Django 1.4开始，有这样一个现象：很多开发者错误地使用Django自带的应用模板创建项目，导致他们的仓库结构非常糟糕。</p>
+<p>这是怎么回事呢? 原来, 他们在创建一个新的仓库后通常都这样操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ django-admin.py startproject samplesite</span><br></pre></td></tr></table></figure>
+
+<p>这样子操作生成的仓库结构是这样的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">README.rst</span><br><span class="line">samplesite&#x2F;manage.py</span><br><span class="line">samplesite&#x2F;samplesite&#x2F;settings.py</span><br><span class="line">samplesite&#x2F;samplesite&#x2F;wsgi.py</span><br><span class="line">samplesite&#x2F;samplesite&#x2F;sampleapp&#x2F;models.py</span><br></pre></td></tr></table></figure>
+
+<p>亲，不要这样做。</p>
+<p>相对路径会让您的工具和您的开发者都很疑惑。没有必要的嵌套对任何人都没有好处（除非您怀念庞大的SVN仓库）。</p>
+<p>让我们这样来做:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ django-admin.py startproject samplesite .</span><br></pre></td></tr></table></figure>
+
+<p>注意末尾的”<code>.</code>“。</p>
+<p>生成的结构是这样的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">README.rst</span><br><span class="line">manage.py</span><br><span class="line">samplesite&#x2F;settings.py</span><br><span class="line">samplesite&#x2F;wsgi.py</span><br><span class="line">samplesite&#x2F;sampleapp&#x2F;models.py</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>END</p>
+</blockquote>
+<hr>
+<p>翻译自 <a target="_blank" rel="noopener" href="https://docs.python-guide.org/writing/structure/">https://docs.python-guide.org/writing/structure/</a>.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://actionou.github.io/2020/01/10/great-python-code-structure/" data-id="cki7jv61000017dst4okd6qfh" data-title="写出优雅的Python代码之—仓库结构（译）" class="article-share-link">Share</a>
+      
+      
+        <a href="/2020/01/10/great-python-code-structure/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2020/01/10/great-python-code-structure/" itemprop="commentCount"></span>
+          Comments
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/12/02/python-singleton/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Python中的单例模式</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+  <section id="comments" class="vcomment">
+
+  </section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssh/" rel="tag">ssh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/" rel="tag">vim</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/1970/01/">January 1970</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/10/great-python-code-structure/">写出优雅的Python代码之—仓库结构（译）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/02/python-singleton/">Python中的单例模式</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/01/vimrc/">vimrc</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/30/github-add-ssh-key/">Github添加SSH KEY</a>
+          </li>
+        
+          <li>
+            <a href="/1970/01/01/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2020 actionou<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+<script>
+    var GUEST_INFO = ['nick','mail','link'];
+    var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+        return GUEST_INFO.indexOf(item) > -1
+    });
+    var notify = 'false' == true;
+    var verify = 'false' == true;
+    new Valine({
+        el: '.vcomment',
+        notify: notify,
+        verify: verify,
+        appId: "SWLpR8olgGKTGIX33ACCGr1d-gzGzoHsz",
+        appKey: "bYikAPbAHWRxsxa7bv4S6cux",
+        placeholder: "Just go go",
+        pageSize:'10',
+        avatar:'mm',
+        lang:'zh-cn'
+    });
+</script>
+
+  </div>
+</body>
+</html>
