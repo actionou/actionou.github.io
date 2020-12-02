@@ -71,6 +71,112 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-use-data-analysis-solve-practical-problems" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/04/02/use-data-analysis-solve-practical-problems/" class="article-date">
+  <time class="dt-published" datetime="2020-04-02T15:36:17.000Z" itemprop="datePublished">2020-04-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/04/02/use-data-analysis-solve-practical-problems/">如何用数据分析思维解决实际问题？</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>用户分析是电商数据分析中重要的模块，在对用户特征深度理解和用户需求充分挖掘基础上，进行全生命周期的运营管理（拉新—&gt;活跃—&gt;留存—&gt;价值提升—&gt;忠诚），请尝试回答以下3个问题：</p>
+<p>① 用户第一单购买的行为往往反映了用户对平台的信任度和消费能力。现在数据库中有一张用户交易表order，其中有userid（用户ID）、amount（消费金额）、paytime（支付时间），请写出对应的SQL语句，查出每个用户第一单的消费金额。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--查出每个用户第一单的消费金额</span></span><br><span class="line"><span class="comment">--使用窗口函数(考虑一个用户不能同时下两单)</span></span><br><span class="line"><span class="keyword">select</span> a.userid,a.amount</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">(<span class="keyword">select</span> * ,<span class="keyword">rank</span>() <span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> userid <span class="keyword">order</span> <span class="keyword">by</span> paytime) <span class="keyword">as</span> paytime_rank <span class="keyword">from</span> <span class="keyword">order</span> ) <span class="keyword">as</span> </span><br><span class="line">a <span class="keyword">where</span> paytime_rank=<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--使用联结方法</span></span><br><span class="line"><span class="comment">--查出第一单消费时间</span></span><br><span class="line">creat <span class="keyword">view</span> t <span class="keyword">as</span></span><br><span class="line">(<span class="keyword">select</span> userid, <span class="keyword">min</span>(paytime) <span class="keyword">as</span> 首次消费时间 <span class="keyword">from</span> <span class="keyword">order</span> <span class="keyword">group</span> <span class="keyword">by</span> userid)</span><br><span class="line"><span class="comment">--找出第一消费金额</span></span><br><span class="line"><span class="keyword">select</span> t.userid,t.首次消费时间 ,b.amount <span class="keyword">from</span> t <span class="keyword">inner</span> <span class="keyword">join</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">as</span> b</span><br><span class="line"><span class="keyword">on</span> (t.userid=b.userid <span class="keyword">and</span> t.首次消费时间=b.paytime)</span><br></pre></td></tr></table></figure>
+
+<p>② 当你发现本月的支付用户数环比上月大幅下跌（超30%），你会如何去探查背后的原因？请描述你的思路和其中涉及的关键指标。</p>
+<p><img src="https://shop.io.mi-img.com/app/shop/img?id=shop_a372e778e2bcf40c99f03c37d16a74ed.png" alt="image.png"></p>
+<p><strong>第一步：明确问题</strong></p>
+<ul>
+<li>明确数据<strong>来源和准确性</strong>：时间是本月，对比的基准是上月，地点是哪个城市的支付用户还是所有的支付用户?数据来源哪个部门，数据是否无误，</li>
+<li><strong>业务指标</strong>理解：支付用户数=用户数*转化率 。明确是和上月对比下跌超过30%，运用多维度拆解分析方法，把整体拆成部分，查看内部的差异。</li>
+</ul>
+<p><strong>第二步：分析原因</strong></p>
+<p>使用多维度拆解分析方法对支付用户数这个指标进行拆解：<strong>支付用户数=用户数*转化率</strong></p>
+<p><img src="https://shop.io.mi-img.com/app/shop/img?id=shop_067cba2f944a054de9def4e0cbca28f8.png" alt="image.png"></p>
+<p>从<strong>新老用户维度进行拆解</strong>，把用户数拆解成新用户数和老用户活跃人数，其中新用户数在平台购买过的用户人数，老用户活跃人数是在平台购买过的用户在平台活跃的人数。</p>
+<p>新用户数按渠道维度，又继续拆解为渠道A新用户，渠道B新用户等，考虑不同渠道的转化率也可能不一样，同样分渠道拆解为渠道A转化率，渠道B转化率，渠道C转化率。</p>
+<p><img src="https://shop.io.mi-img.com/app/shop/img?id=shop_304cdfc65cd9e493916d35565e9ac08f.png" alt="image.png"></p>
+<p>对以上分析 做出<strong>假设一：渠道A、B、C新用户人数减少</strong></p>
+<p>收集证据，分析渠道投放效果。使用<strong>对比分析方法</strong>，如果确认某渠道用户相比上月确实降低则对渠道用户数进行多维度拆解，可以<strong>从年龄构成拆分，性别构成拆分，职业结构拆分和地域组成拆分，分别进行假设检验</strong>，手机证据，将渠道人数降低定位到是那个人群用户数降低，渠道的导入量降低的原因，分析渠道投放是否有效。</p>
+<p><img src="https://shop.io.mi-img.com/app/shop/img?id=shop_8fd68f327d7b122f4a458b54f6a9daef.png" alt="image.png"></p>
+<p>继续考虑用户数 <strong>假设二：渠道A、B、C转化率降低</strong></p>
+<p>使用对比分析如果确认某渠道转化率降低，继续按业务流程对该渠道具体哪一步出现的问题进行拆解，假设平台用户的流程有广告、进店、选择商品、购买。</p>
+<p>则按业务流程拆解如下，通过<strong>假设检验</strong>，收集数据，查看产品板块是否更新，询问客服是否有投诉，有页面崩溃，不能成功下单导致某一环节流失率高，闪退，使用漏斗模型，判断是哪个产品环节出了问题。<strong>使用假设检验，验证每个环节的假设。</strong></p>
+<p><img src="https://shop.io.mi-img.com/app/shop/img?id=shop_dc66f68108cf68059da2b219e9f2be9b.png" alt="image.png"></p>
+<p><strong>假设三：老用户活跃人数出了问题</strong></p>
+<p>通过假设检验和对比分析方法分析老用户活跃人数是否降低，如果降低的话，思考老用户活跃人数为什么会降低呢？我们从<strong>用户、产品、竞品</strong>三个维度分析原因。</p>
+<p><img src="https://shop.io.mi-img.com/app/shop/img?id=shop_c2daaa1ed112a705864456766d7f9f8c.png" alt="image.png"></p>
+<p><strong>1.</strong> 用户购买体验不好，产品描述与实际不符</p>
+<p><strong>2.</strong> 产品售后服务不够好等</p>
+<p><strong>3.</strong> 上月做活动，上月活跃人数大幅上涨等</p>
+<p><strong>4.</strong> 竞品在搞活动，用户被对手吸引</p>
+<p>可以分别从几个假设去分析原因,如果以上三大部分假设有问题，总结原因如下：</p>
+<ul>
+<li><strong>原始渠道A用户发生改变，</strong>导致渠道导入量下降，具体表现20-35岁年龄段人数下降，该35-50人群年龄段占比上升，而20-30岁群体是为我们平台的主要使用人群。</li>
+<li><strong>产品更新迭代，</strong>用户习惯之前的界面，还没有适应</li>
+<li><strong>由于之前平台大促</strong>，导致平台的售后和产品质量方面波动较大，用户颇为不满</li>
+</ul>
+<p>总结<strong>新用户引入不够，老用户留存没做好，产品本身改动，</strong>导致出现了这种大幅下跌的情况。</p>
+<p><strong>第三步：提出建议</strong></p>
+<p>针对以上的分析提出以下建议：</p>
+<ul>
+<li><strong>渠道A用户人群转移</strong>，考虑撤回渠道投放或者修改投放内容，吸引35-50岁人群用户进入平台，提高转化</li>
+<li>用户使用体验不佳，建议<strong>对部分用户推更新版本</strong>，建立对照组，进行AB测试</li>
+<li><strong>从平台的评论，对于中差评老用户进行回访</strong>，明确原因，进行挽回。</li>
+</ul>
+<p>③ 为了更好的理解用户，我们通常会基于用户的特征对用户进行分类，便于更加精细化的理解用户，设计产品和运营玩法，请你设计对应的聚类方法，包括重点的用户特征的选择及聚类算法并说明其基本原理和步骤。</p>
+<p><strong>1. K-means聚类</strong></p>
+<p>使用K-means聚类的好处是可以加入性别，地域，薪资等特征，这样就可以得到的分类的年龄分布情况，薪资情况，职业分布等情况，<strong>比RFM会信息更多，但类别的解释性没有RFM用户分层强</strong></p>
+<p><strong>特征选择</strong>：人口统计学特征（性别，地域 ,年龄，薪资，职业，家庭成员)，用户分层特征（消费频率，平均消费金额，最近一次消费时间）产品特征(购买物品类别)</p>
+<p><strong>基本原理</strong>：</p>
+<p>step1：选举K个对象作为初始的聚类中心；</p>
+<p>step2：计算每个对象与各种子聚类中心间的欧式距离，把每个对象分配给他最近的聚类中心；</p>
+<p>step3：一旦全部对象被分配了，每个聚类的聚类中心会根据聚类中现有的对象被重新计算，重新分配。依次循环，直到聚类中心点不再改变时循环结束。</p>
+<p><strong>2. RFM分层</strong></p>
+<p>根据业务需求，使用RFM对用户进行分层，使用RFM的好处是<strong>得到的类别结果具有更明确的实际业务意义</strong>，能指导精细化运营。<strong>缺点是没有考虑用户的人口统计学特征。</strong></p>
+<p>主要得到分层结果重要（一般）价值、发展、挽留、保持客户八类</p>
+<p>step1：计算RFM值（消费频率，平均消费金额，最近一次消费时间）</p>
+<p>step2：分别RFM进行打分，确定打分体系，按价值打分,，计算均值或中值,超过均值/中值则该项指标分类为高，低于均值则该指标分类为低，</p>
+<p>step3：进行用户分类，根据用户分类规则找到是否高低</p>
+<p>step4：对应表格找到用户属于哪个分类</p>
+<p><img src="https://shop.io.mi-img.com/app/shop/img?id=shop_3ae8a7ebdb35ad2d8c28bd147af542e7.png" alt="image.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://actionou.github.io/2020/04/02/use-data-analysis-solve-practical-problems/" data-id="cki7loycl0009austab66buin" data-title="如何用数据分析思维解决实际问题？" class="article-share-link">Share</a>
+      
+      
+        <a href="/2020/04/02/use-data-analysis-solve-practical-problems/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2020/04/02/use-data-analysis-solve-practical-problems/" itemprop="commentCount"></span>
+          Comments
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-great-python-code-structure" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2020/01/10/great-python-code-structure/" class="article-date">
@@ -260,7 +366,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://actionou.github.io/2020/01/10/great-python-code-structure/" data-id="cki7jv61000017dst4okd6qfh" data-title="写出优雅的Python代码之—仓库结构（译）" class="article-share-link">Share</a>
+      <a data-url="https://actionou.github.io/2020/01/10/great-python-code-structure/" data-id="cki7loycl0008aust7hkb31vo" data-title="写出优雅的Python代码之—仓库结构（译）" class="article-share-link">Share</a>
       
       
         <a href="/2020/01/10/great-python-code-structure/#comments" class="article-comment-link">
@@ -355,7 +461,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://actionou.github.io/2019/12/02/python-singleton/" data-id="cki7jv61400047dst5xi8g100" data-title="Python中的单例模式" class="article-share-link">Share</a>
+      <a data-url="https://actionou.github.io/2019/12/02/python-singleton/" data-id="cki7loycj0005austgpma4di1" data-title="Python中的单例模式" class="article-share-link">Share</a>
       
       
         <a href="/2019/12/02/python-singleton/#comments" class="article-comment-link">
@@ -402,7 +508,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://actionou.github.io/2019/07/01/vimrc/" data-id="cki7jv618000e7dst519q1daa" data-title="vimrc" class="article-share-link">Share</a>
+      <a data-url="https://actionou.github.io/2019/07/01/vimrc/" data-id="cki7loycm000aaustaqbsdixe" data-title="vimrc" class="article-share-link">Share</a>
       
       
         <a href="/2019/07/01/vimrc/#comments" class="article-comment-link">
@@ -461,7 +567,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://actionou.github.io/2019/01/30/github-add-ssh-key/" data-id="cki7jv61300037dsta2y47afu" data-title="Github添加SSH KEY" class="article-share-link">Share</a>
+      <a data-url="https://actionou.github.io/2019/01/30/github-add-ssh-key/" data-id="cki7loycc0000austad3xgbjx" data-title="Github添加SSH KEY" class="article-share-link">Share</a>
       
       
         <a href="/2019/01/30/github-add-ssh-key/#comments" class="article-comment-link">
@@ -519,7 +625,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://actionou.github.io/1970/01/01/hello-world/" data-id="cki7jv60w00007dst5eb8bymb" data-title="Hello World" class="article-share-link">Share</a>
+      <a data-url="https://actionou.github.io/1970/01/01/hello-world/" data-id="cki7loyck0006aust9jld52mg" data-title="Hello World" class="article-share-link">Share</a>
       
       
         <a href="/1970/01/01/hello-world/#comments" class="article-comment-link">
@@ -561,7 +667,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/1970/01/">January 1970</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/1970/01/">January 1970</a></li></ul>
     </div>
   </div>
 
@@ -572,6 +678,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/04/02/use-data-analysis-solve-practical-problems/">如何用数据分析思维解决实际问题？</a>
+          </li>
         
           <li>
             <a href="/2020/01/10/great-python-code-structure/">写出优雅的Python代码之—仓库结构（译）</a>
@@ -587,10 +697,6 @@
         
           <li>
             <a href="/2019/01/30/github-add-ssh-key/">Github添加SSH KEY</a>
-          </li>
-        
-          <li>
-            <a href="/1970/01/01/hello-world/">Hello World</a>
           </li>
         
       </ul>
