@@ -1,7 +1,7 @@
 ---
 title: vimrc
-date: 2020-07-01 23:26:01
-tags: [vim,vimrc]
+date: 2019-07-01 23:26:01
+tags: [vim]
 ---
 
 `pycharm`和`jupyter notebook`是我的主要coding工具，但偶尔也免不了直接在终端进行编辑，所以根据自己的需求和使用习惯对vim配置做了如下简单的调整：
