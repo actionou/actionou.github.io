@@ -14,7 +14,7 @@
 <meta property="og:description" content="对开发人员来说，SSH密钥在很多场景都要用到，而大多数人在不同平台使用同一个密钥对，比如公司代码仓库、公司服务器、个人服务器、甚至多个GitHub账号等等。个人建议是每个平台使用专门的密钥对，并好好存档管理。 1、生成一个GitHub专用的密钥对比如GitHub用户名为xyz 1mkdir -p ~&#x2F;.ssh; cd ~&#x2F;.ssh; ssh-keygen -t rsa -f id_github_x">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-01-30T10:31:51.000Z">
-<meta property="article:modified_time" content="2020-12-02T14:53:37.474Z">
+<meta property="article:modified_time" content="2020-12-08T14:35:35.932Z">
 <meta property="article:author" content="actionou">
 <meta property="article:tag" content="github">
 <meta property="article:tag" content="ssh">
@@ -97,6 +97,8 @@
 <h2 id="1、生成一个GitHub专用的密钥对"><a href="#1、生成一个GitHub专用的密钥对" class="headerlink" title="1、生成一个GitHub专用的密钥对"></a>1、生成一个GitHub专用的密钥对</h2><p>比如GitHub用户名为<code>xyz</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/.ssh; <span class="built_in">cd</span> ~/.ssh; ssh-keygen -t rsa -f id_github_xyz -C <span class="string">&quot;your email&quot;</span></span><br></pre></td></tr></table></figure>
 
+<a id="more"></a>
+
 <h2 id="2、设置秘钥对文件权限"><a href="#2、设置秘钥对文件权限" class="headerlink" title="2、设置秘钥对文件权限"></a>2、设置秘钥对文件权限</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 400 id_github_xyz id_github_xyz.pub</span><br></pre></td></tr></table></figure>
 
 <h2 id="3、把SSH-KEY添加到GitHub管理后台"><a href="#3、把SSH-KEY添加到GitHub管理后台" class="headerlink" title="3、把SSH KEY添加到GitHub管理后台"></a>3、把SSH KEY添加到GitHub管理后台</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat id_github_xyz.pub</span><br></pre></td></tr></table></figure>
@@ -111,7 +113,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://actionou.github.io/2019/01/30/github-add-ssh-key/" data-id="cki7oho270000m6stgv6w4aqb" data-title="Github添加SSH KEY" class="article-share-link">Share</a>
+      <a data-url="https://actionou.github.io/2019/01/30/github-add-ssh-key/" data-id="ckig5rnxu0000f2stanhj9uez" data-title="Github添加SSH KEY" class="article-share-link">Share</a>
       
       
         <a href="/2019/01/30/github-add-ssh-key/#comments" class="article-comment-link">
