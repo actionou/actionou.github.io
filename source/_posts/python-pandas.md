@@ -10,6 +10,8 @@ tags: [python,pandas]
 - apply能处理单列或多列，如果直接对df.apply(func,axis=1),那么传入函数的是df,df['price'].apply(np.log)传入的是price列
 - applymap对全部元素操作，df.applymap(lambda x:"%.2f" % x)
 
+<!--more-->
+
 ```python
 # 分组后直接apply，传入的是每个组的df
 arpu =date_buy_3.groupby('date').apply(lambda x:x[x.behavior_type==4].total.sum()/len(x.user_id.unique()))

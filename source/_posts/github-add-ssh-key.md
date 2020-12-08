@@ -15,6 +15,8 @@ tags: [github,ssh]
 mkdir -p ~/.ssh; cd ~/.ssh; ssh-keygen -t rsa -f id_github_xyz -C "your email"
 ```
 
+<!--more-->
+
 ## 2、设置秘钥对文件权限
 
 ```bash

@@ -17,6 +17,7 @@ refer:[http://c.biancheng.net/view/1320.html](http://c.biancheng.net/view/1320.h
 | 类模式    | 工厂方法                              | (类)适配器                                                 | 模板方法、解释器                                             |
 | 对象模式  | 单例<br/>原型<br/>抽象工厂<br/>建造者 | 代理<br/>(对象)适配器<br/>桥接<br/>装饰<br/>外观<br/>享元<br/>组合 | 策略<br/>命令<br/>职责链<br/>状态<br/>观察者<br/>中介者<br/>迭代器<br/>访问者<br/>备忘录 |
 
+<!--more-->
 
 ## Python中实现单例模式的方法
 
